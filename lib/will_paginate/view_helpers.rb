@@ -118,10 +118,12 @@ module WillPaginate
     #           <link rel="prev" href="http://example.com/items/page/1" />
     #
     def pagination_link_tags(collection, params = {})
+      engine = params.delete(:engine) || self
+
       output = []
       link = '<link rel="%s" href="%s" />'
-      output << link % ["prev", url_for(params.merge(:page => collection.previous_page, :only_path => false))] if collection.previous_page
-      output << link % ["next", url_for(params.merge(:page => collection.next_page, :only_path => false))] if collection.next_page
+      output << link % ["prev", engine.url_for(params.merge(:page => collection.previous_page, :only_path => false))] if collection.previous_page
+      output << link % ["next", engine.url_for(params.merge(:page => collection.next_page, :only_path => false))] if collection.next_page
       output.join("\n").html_safe
     end
 
